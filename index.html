@@ -1,0 +1,440 @@
+<!doctype html>
+<html lang="hu">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>MatekMozgás</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+
+<body>
+
+    <div class="app">
+
+        <!-- ========================================
+             FEJLÉC
+             ======================================== -->
+
+        <header class="top">
+
+            <div class="brand">
+                <img src="matekmozgas-logo.png" alt="MatekMozgás">
+            </div>
+
+            <div class="top-actions">
+
+                <div class="timer" id="totalTimer">
+                    05:00
+                </div>
+
+            <button
+    class="icon-btn"
+    id="soundBtn"
+    title="Hang be/ki">
+    🔊
+</button>
+
+
+<button
+    class="icon-btn"
+    id="fullscreenBtn"
+    title="Teljes képernyő">
+    ⛶
+</button>
+
+
+<button
+    class="icon-btn"
+    id="settingsBtn"
+    title="Beállítások">
+    ⚙️
+</button>
+
+            </div>
+
+        </header>
+
+
+        <!-- ========================================
+             FŐ ELRENDEZÉS
+             ======================================== -->
+
+        <div class="layout">
+
+
+            <!-- ====================================
+                 JÁTÉK VÁLASZTÁSA
+                 ==================================== -->
+
+            <aside class="sidebar">
+
+                <h2>
+                    🎮 Játék választása
+                </h2>
+
+
+                <button class="game-select active">
+                    🔢 Páros vagy páratlan ✓
+                </button>
+
+
+                <button class="game-select locked">
+                    🔒 Igaz vagy hamis
+                </button>
+
+
+                <button class="game-select locked">
+                    🔒 Nagyobb vagy kisebb
+                </button>
+
+
+                <button class="game-select locked">
+                    🔒 Osztható-e?
+                </button>
+
+
+                <button class="game-select locked">
+                    🔒 Melyik nagyobb?
+                </button>
+
+
+                <button class="game-select locked">
+                    🔒 Számvadász
+                </button>
+
+            </aside>
+
+
+            <!-- ====================================
+                 JÁTÉKTERÜLET
+                 ==================================== -->
+
+            <main class="main">
+
+                <section class="game-card">
+
+
+                    <!-- Játék címe -->
+
+                    <h1 class="game-title">
+                        Páros vagy páratlan?
+                    </h1>
+
+
+                    <!-- Feladat -->
+
+                    <div class="problem-wrap">
+
+                        <div class="problem">
+
+                            <div
+                                class="number"
+                                id="a">
+                                7
+                            </div>
+
+
+                            <div
+                                class="operator"
+                                id="op">
+                                +
+                            </div>
+
+
+                            <div
+                                class="number"
+                                id="b">
+                                8
+                            </div>
+
+                        </div>
+
+
+                        <!-- Visszaszámlálás -->
+
+                        <div
+                            class="countdown"
+                            id="countdown">
+                            Kezdéshez nyomd meg a gombot!
+                        </div>
+
+                    </div>
+
+
+                    <!-- =================================
+                         EREDMÉNY
+                         ================================= -->
+
+                    <div
+                        class="result"
+                        id="result">
+
+                        <div
+                            class="result-number"
+                            id="resultNumber">
+                            15
+                        </div>
+
+
+                        <div
+                            class="result-label"
+                            id="resultLabel">
+                            PÁRATLAN!
+                        </div>
+
+
+                        <div
+                            class="action"
+                            id="resultAction">
+                            🧎 GUGGOLJ!
+                        </div>
+
+                    </div>
+
+
+                    <!-- =================================
+                         MOZGÁSKÉPEK
+                         ================================= -->
+
+                    <div class="rules">
+
+                        <div class="rule odd">
+
+                            <img
+                                src="guggolas.png"
+                                alt="Guggolás">
+
+                        </div>
+
+
+                        <div class="rule even">
+
+                            <img
+                                src="ugras.png"
+                                alt="Ugrás">
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- =================================
+                         VEZÉRLŐGOMBOK
+                         ================================= -->
+
+                    <div class="controls">
+
+                        <button
+                            class="primary"
+                            id="startBtn">
+                            ▶️ Játék indítása
+                        </button>
+
+
+                        <button
+                            class="secondary hidden"
+                            id="stopBtn">
+                            ⏹️ Játék vége
+                        </button>
+
+                    </div>
+
+                </section>
+
+            </main>
+
+        </div>
+
+    </div>
+
+
+    <!-- ============================================
+         BEÁLLÍTÁSOK
+         ============================================ -->
+
+    <div
+        class="overlay"
+        id="overlay">
+
+        <div class="settings-box">
+
+
+            <!-- Bezárás -->
+
+            <button
+                class="close-x"
+                id="closeX"
+                title="Bezárás">
+                ×
+            </button>
+
+
+            <h2>
+                ⚙️ Beállítások
+            </h2>
+
+
+            <!-- Legnagyobb szám -->
+
+            <div class="setting-row">
+
+                <label>
+
+                    <span>
+                        Legnagyobb szám
+                    </span>
+
+                    <span id="maxValueText">
+                        25
+                    </span>
+
+                </label>
+
+
+                <input
+                    class="range"
+                    id="maxValue"
+                    type="range"
+                    min="5"
+                    max="100"
+                    value="25">
+
+            </div>
+
+            <!-- Játékidő -->
+
+<div class="setting-row">
+
+    <label>
+
+        <span>
+            ⏱️ Játékidő
+        </span>
+
+        <span id="gameTimeText">
+            5 perc
+        </span>
+
+    </label>
+
+    <input
+        class="range"
+        id="gameTime"
+        type="range"
+        min="1"
+        max="10"
+        value="5">
+
+</div>
+
+
+<!-- Gondolkodási idő -->
+
+<div class="setting-row">
+
+    <label>
+
+        <span>
+            ⏳ Gondolkodási idő
+        </span>
+
+        <span id="thinkingTimeText">
+            5 másodperc
+        </span>
+
+    </label>
+
+    <input
+        class="range"
+        id="thinkingTime"
+        type="range"
+        min="1"
+        max="10"
+        value="5">
+
+</div>
+
+
+            <!-- Műveletek -->
+
+            <div class="setting-row">
+
+                <label>
+
+                    <span>
+                        Engedélyezett műveletek
+                    </span>
+
+                </label>
+
+
+                <div class="ops">
+
+                    <button
+                        class="opcheck on"
+                        data-op="+">
+                        ＋ Összeadás
+                    </button>
+
+
+                    <button
+                        class="opcheck on"
+                        data-op="-">
+                        － Kivonás
+                    </button>
+
+
+                    <button
+                        class="opcheck on"
+                        data-op="×">
+                        × Szorzás
+                    </button>
+
+
+                    <button
+                        class="opcheck on"
+                        data-op="÷">
+                        ÷ Osztás
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- Beállítások bezárása -->
+
+            <button
+                class="close-btn"
+                id="closeSettings">
+                Kész
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- ============================================
+         ÉRTESÍTÉS
+         ============================================ -->
+
+    <div
+        class="toast"
+        id="toast">
+    </div>
+
+
+    <!-- ============================================
+         JAVASCRIPT
+         ============================================ -->
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>

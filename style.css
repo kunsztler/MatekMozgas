@@ -1,0 +1,741 @@
+:root {
+    --ink: #17345d;
+    --blue: #087bd0;
+    --yellow: #ffd21f;
+    --pink: #ef2f83;
+    --green: #18b66b;
+    --panel: #ffffffef;
+    --shadow: 0 12px 30px rgba(19, 55, 95, .22);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    overflow: hidden;
+    color: var(--ink);
+    font-family: Arial, Helvetica, sans-serif;
+    background:
+        radial-gradient(circle at 5% 5%, #ffc82f 0 10%, transparent 27%),
+        radial-gradient(circle at 95% 5%, #ff78b5 0 9%, transparent 28%),
+        radial-gradient(circle at 88% 100%, #34d99a 0 11%, transparent 28%),
+        radial-gradient(circle at 8% 100%, #42c6ff 0 11%, transparent 28%),
+        linear-gradient(135deg, #ffd65c, #69dcff 27%, #d6f47d 52%, #ffb6d5 77%, #83e8bd);
+}
+
+button {
+    font: inherit;
+}
+
+.app {
+    height: 100vh;
+    padding: 10px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.top {
+    height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.brand {
+    width: 1000px;
+    height: 170px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: visible;
+    position: relative;
+    z-index: 10;
+}
+
+.brand img {
+    display: block;
+    width: 100%;
+    height: 120px;
+    max-height: none;
+    object-fit: contain;
+    object-position: center;
+   transform: scale(1.8) translate(-170px, 10px);
+    transform-origin: center center;
+}
+
+.top-actions {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.timer,
+.icon-btn {
+    background: #fff;
+    border: 0;
+    border-radius: 15px;
+    box-shadow: var(--shadow);
+}
+
+.timer {
+    font-size: 22px;
+    font-weight: 1000;
+    padding: 9px 13px;
+    min-width: 78px;
+    text-align: center;
+}
+
+.icon-btn {
+    width: 44px;
+    height: 44px;
+    cursor: pointer;
+    font-size: 20px;
+}
+
+.layout {
+    flex: 1;
+    min-height: 0;
+    display: grid;
+    grid-template-columns: 190px 1fr;
+    gap: 12px;
+}
+
+.sidebar,
+.game-card {
+    background: var(--panel);
+    border: 2px solid #fff;
+    border-radius: 24px;
+    box-shadow: var(--shadow);
+}
+
+/* A játék választó kerete a tervhez igazítva sötétkék. */
+.sidebar {
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    background: linear-gradient(180deg, #0758a8 0%, #064487 100%);
+    border: 3px solid #06366d;
+    box-shadow: 0 8px 20px rgba(4, 43, 91, .28);
+}
+
+.sidebar h2 {
+    color: #fff;
+    font-size: 16px;
+    margin: 3px 3px 5px;
+    text-shadow: 0 1px 2px rgba(0, 30, 70, .35);
+}
+
+.game-select {
+    border: 2px solid #4d8dcc;
+    border-radius: 14px;
+    background: linear-gradient(180deg, #3479ba 0%, #2869aa 100%);
+    color: #fff;
+    padding: 10px;
+    text-align: left;
+    font-size: 13px;
+    font-weight: 900;
+    cursor: pointer;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.18);
+}
+
+.game-select.active {
+    background: linear-gradient(135deg, #ffd11f, #ffea4f);
+    border-color: #f0bd00;
+    color: #07376f;
+    box-shadow: 0 2px 7px rgba(0, 0, 0, .14);
+}
+
+.game-select.locked {
+    opacity: .72;
+    background: linear-gradient(180deg, #4382bb 0%, #326fa9 100%);
+    color: #dcecff;
+}
+
+.main {
+    min-width: 0;
+    min-height: 0;
+    display: flex;
+}
+
+.game-card {
+    position: relative;
+    width: 100%;
+    min-height: 0;
+    padding: 10px 14px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+}
+
+.game-title {
+    flex: 0 0 auto;
+    text-align: center;
+    font-size: clamp(27px, 3vw, 39px);
+    line-height: 1.05;
+    margin: 0;
+}
+
+.hint {
+    display: none;
+}
+
+/* ================================
+   FELADAT – NAGY, ÁLLANDÓ KERET
+   ================================ */
+
+.problem-wrap {
+    position: relative;
+    width: min(820px, 84vw);
+    height: 330px;
+    flex: 0 0 330px;
+    margin: 7px auto 0;
+}
+
+.problem {
+    width: 100%;
+    height: 240px;
+
+    display: grid;
+    grid-template-columns: 1fr 120px 1fr;
+    align-items: center;
+    justify-items: center;
+
+    padding: 18px 26px;
+
+    border: 4px solid #43ace8;
+    border-radius: 30px;
+    background: #eefaff;
+    box-shadow: 0 8px 0 #d2efff;
+}
+
+/* A számok szándékosan nagyon nagyok és fix méretű dobozban vannak. */
+.number {
+    width: 280px;
+    height: 192px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0;
+    background: #fff;
+    border: 4px solid #43ace8;
+    border-radius: 24px;
+
+    font-size: clamp(115px, 10vw, 160px);
+    font-weight: 1000;
+    line-height: .86;
+
+    color: #17345d;
+    text-align: center;
+    white-space: nowrap;
+
+    box-shadow: 0 7px 0 #d2efff;
+}
+
+#a {
+    justify-self: start;
+}
+
+#b {
+    justify-self: end;
+}
+
+/* Műveleti jel – mindig középen */
+
+.operator {
+    position: static !important;
+
+    width: 120px !important;
+    height: 120px !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    font-size: 90px !important;
+    font-weight: 900 !important;
+    line-height: 1 !important;
+
+    color: #17345d !important;
+
+    background: #ffbf00 !important;
+    border: 6px solid #17345d !important;
+    border-radius: 24px !important;
+    box-sizing: border-box !important;
+
+    text-align: center !important;
+}
+
+/* A visszaszámláló mindig a keret alatt, középen van. */
+.countdown {
+    position: absolute;
+    top: 252px;
+    left: 50%;
+    width: max-content;
+    transform: translateX(-50%);
+
+    height: 58px;
+    margin: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+    font-size: clamp(30px, 3.1vw, 41px);
+    font-weight: 1000;
+    line-height: 1;
+    color: #087bd0;
+    white-space: nowrap;
+}
+
+/* ================================
+   MOZGÁSKÉPEK – NAGYOBBAN ÉS LEJJEBB
+   ================================ */
+
+.rules {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 48px;
+
+    height: 230px;
+
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: end;
+    gap: 24px;
+
+    padding: 0 30px;
+}
+
+.rule {
+    height: 230px;
+    min-height: 0;
+
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+
+    padding: 0;
+    background: transparent;
+    border: 0 !important;
+    border-radius: 0;
+}
+
+.rule strong,
+.move {
+    display: none;
+}
+
+/* 230px magas képtér → a korábbi 160px-hez képest látványosan nagyobb. */
+.rule img {
+    width: min(520px, 40vw);
+    height: 230px;
+    object-fit: contain;
+    display: block;
+}
+
+/* ================================
+   VEZÉRLŐGOMB
+   ================================ */
+
+.controls {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 7px;
+
+    display: flex;
+    justify-content: center;
+    gap: 9px;
+    margin: 0;
+    z-index: 5;
+}
+
+.primary,
+.secondary {
+    border: 0;
+    border-radius: 14px;
+    padding: 9px 20px;
+    font-weight: 1000;
+    cursor: pointer;
+    box-shadow: 0 5px 0 #0878b9;
+}
+
+.primary {
+    background: #129fe8;
+    color: #fff;
+}
+
+.secondary {
+    background: #e8f3fb;
+    color: var(--ink);
+    box-shadow: 0 5px 0 #bfd4e6;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* ================================
+   EREDMÉNY
+   ================================ */
+
+.result {
+    position: absolute;
+    inset: 72px 0 120px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+    opacity: 0;
+    pointer-events: none;
+    transform: scale(.45);
+    z-index: 4;
+}
+
+.result.show {
+    animation: pop .9s ease-out forwards;
+}
+
+@keyframes pop {
+    0% {
+        opacity: 0;
+        transform: scale(.4);
+    }
+
+    55% {
+        opacity: 1;
+        transform: scale(1.12);
+    }
+
+    75% {
+        transform: scale(.96);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.result-number {
+    font-size: clamp(120px, 17vw, 230px);
+    font-weight: 1000;
+    color: #f0257c;
+    text-shadow: 0 7px 0 #fff, 0 12px 0 #c91b67;
+}
+
+.result-label {
+    font-size: clamp(31px, 4.5vw, 62px);
+    font-weight: 1000;
+    background: #ffd21f;
+    padding: 4px 22px;
+    border-radius: 19px;
+    box-shadow: 0 7px 0 #dda900;
+}
+
+.action {
+    margin-top: 9px;
+    font-size: clamp(26px, 3.7vw, 49px);
+    font-weight: 1000;
+    color: #fff;
+    background: #ef2f83;
+    border-radius: 19px;
+    padding: 7px 25px;
+    box-shadow: 0 7px 0 #c61a64;
+}
+
+/* ================================
+   BEÁLLÍTÁSOK
+   ================================ */
+
+.overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(9, 35, 66, .64);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 20;
+}
+
+.overlay.open {
+    display: flex;
+}
+
+.settings-box {
+    width: min(620px, 92vw);
+    background: #fff;
+    border-radius: 24px;
+    padding: 24px;
+    box-shadow: 0 22px 55px #0005;
+    position: relative;
+}
+
+.settings-box h2 {
+    margin: 0 0 15px;
+    font-size: 29px;
+}
+
+.close-x {
+    position: absolute;
+    right: 14px;
+    top: 12px;
+    border: 0;
+    background: #edf5fb;
+    border-radius: 12px;
+    width: 40px;
+    height: 40px;
+    font-size: 25px;
+    font-weight: 1000;
+    cursor: pointer;
+}
+
+.setting-row {
+    margin: 14px 0;
+}
+
+.setting-row label {
+    display: flex;
+    justify-content: space-between;
+    font-weight: 900;
+    margin-bottom: 7px;
+}
+
+.range {
+    width: 100%;
+    accent-color: #139fe8;
+}
+
+.ops {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.opcheck {
+    border: 2px solid #cde2f3;
+    background: #eef8ff;
+    border-radius: 12px;
+    padding: 8px 12px;
+    font-weight: 1000;
+    cursor: pointer;
+}
+
+.opcheck.on {
+    background: #ffd21f;
+    border-color: #e0b500;
+}
+
+.close-btn {
+    margin-top: 13px;
+    border: 0;
+    background: #139fe8;
+    color: #fff;
+    border-radius: 13px;
+    padding: 10px 20px;
+    font-weight: 1000;
+    cursor: pointer;
+}
+
+.toast {
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background: #fff;
+    padding: 22px 28px;
+    border-radius: 20px;
+    box-shadow: 0 20px 45px #0004;
+    font-weight: 1000;
+    font-size: 23px;
+    z-index: 30;
+    display: none;
+}
+
+.toast.show {
+    display: block;
+}
+
+/* ================================
+   KISEBB KÉPERNYŐ
+   ================================ */
+
+@media (max-width: 900px) {
+    .problem-wrap {
+        width: min(720px, 88vw);
+    }
+
+    .problem {
+        grid-template-columns: 1fr 90px 1fr;
+        padding: 15px 18px;
+    }
+
+    .number {
+        width: 235px;
+        height: 175px;
+        font-size: clamp(100px, 10vw, 140px);
+    }
+
+    .operator {
+        width: 90px;
+        font-size: 72px;
+    }
+
+    .rule img {
+        width: min(400px, 39vw);
+    }
+}
+
+@media (max-width: 800px) {
+    .layout {
+        grid-template-columns: 1fr;
+    }
+
+    .sidebar {
+        display: none;
+    }
+
+    .problem-wrap {
+        width: 92vw;
+        height: 300px;
+        flex-basis: 300px;
+    }
+
+    .problem {
+        height: 215px;
+        grid-template-columns: 1fr 70px 1fr;
+        padding: 12px;
+    }
+
+    .number {
+        width: min(205px, 29vw);
+        height: 160px;
+        font-size: clamp(82px, 11vw, 120px);
+    }
+
+.operator {
+    width: 120px;
+    height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 90px;
+    font-weight: 1000;
+    line-height: 1;
+
+    color: #ffbf00;
+    background: #173b73;
+    border: 6px solid #ffbf00;
+    border-radius: 24px;
+    box-sizing: border-box;
+}
+    .countdown {
+        top: 227px;
+    }
+
+    .rules {
+        height: 180px;
+        bottom: 45px;
+        gap: 5px;
+        padding: 0 4px;
+    }
+
+    .rule,
+    .rule img {
+        height: 180px;
+    }
+
+    .rule img {
+        width: min(300px, 45vw);
+    }
+}
+
+@media (max-height: 720px) {
+    .app {
+        padding: 7px 10px;
+        gap: 5px;
+    }
+
+    .top {
+        height: 72px;
+        flex-basis: 72px;
+    }
+
+    .brand {
+        height: 72px;
+        width: min(620px, 58vw);
+    }
+
+    .game-card {
+        padding-top: 7px;
+    }
+
+    .problem-wrap {
+        height: 295px;
+        flex-basis: 295px;
+        margin-top: 5px;
+    }
+
+    .problem {
+        height: 205px;
+    }
+
+    .number {
+        height: 160px;
+        font-size: clamp(105px, 9vw, 145px);
+    }
+
+    .countdown {
+        top: 217px;
+    }
+
+    .rules {
+        height: 205px;
+        bottom: 43px;
+    }
+
+    .rule,
+    .rule img {
+        height: 205px;
+    }
+
+    .rule img {
+        width: min(470px, 40vw);
+    }
+
+    .controls {
+        bottom: 5px;
+    }
+}
+
+
+/* ===== Páros / páratlan színek ===== */
+.result.even .result-number{color:#18b66b !important;text-shadow:0 7px 0 #fff,0 12px 0 #12884f !important;}
+.result.even .action{background:#18b66b !important;box-shadow:0 7px 0 #12884f !important;}
+.result.odd .result-number{color:#ef2f83 !important;text-shadow:0 7px 0 #fff,0 12px 0 #c61a64 !important;}
+.result.odd .action{background:#ef2f83 !important;box-shadow:0 7px 0 #c61a64 !important;}
+
+/* ===== Műveleti jel ===== */
+.operator{width:120px !important;height:120px !important;display:flex !important;align-items:center !important;justify-content:center !important;font-size:90px !important;font-weight:900 !important;line-height:1 !important;color:#17345d !important;background:#ffbf00 !important;border:6px solid #17345d !important;border-radius:24px !important;box-sizing:border-box !important;text-align:center !important;}
