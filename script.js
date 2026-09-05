@@ -284,6 +284,15 @@ function startGame() {
     if (state.running) return;
 
 
+    // Indításkor teljes képernyőre váltás.
+    // A start gomb kattintása felhasználói művelet, ezért a böngésző engedélyezi.
+    if (!document.fullscreenElement) {
+
+        document.documentElement.requestFullscreen?.().catch(() => {});
+
+    }
+
+
 state.running = true;
 state.total = state.gameTime * 60;
 
